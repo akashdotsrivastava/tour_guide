@@ -1,5 +1,4 @@
-require "tour_guide/version"
+require 'tour_guide/engine'
 
 module TourGuide
-  # Your code goes here...
 end
