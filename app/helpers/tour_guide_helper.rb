@@ -27,5 +27,7 @@ module TourGuideHelper
       # p session[:_tour]
       # p steps
       steps ? javascript_tag(javascript,type: 'text/javascript') : ''
+  rescue
+    ''
   end
 end
