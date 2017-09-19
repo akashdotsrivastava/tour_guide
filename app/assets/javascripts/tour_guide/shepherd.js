@@ -567,7 +567,7 @@ var Tour = (function (_Evented2) {
     value: function bindMethods() {
       var _this9 = this;
 
-      var methods = ['next', 'back', 'cancel', 'complete', 'hide'];
+      var methods = ['next', 'back', 'cancel', 'complete', 'hide','lastStep'];
       methods.map(function (method) {
         _this9[method] = _this9[method].bind(_this9);
       });
@@ -644,6 +644,12 @@ var Tour = (function (_Evented2) {
       }
     }
   }, {
+    key: 'lastStep',
+    value: function lastStep(){
+      var last_step_index = this.steps.length - 1
+      this.show(last_step_index, true);
+    }
+  },{
     key: 'back',
     value: function back() {
       var index = this.steps.indexOf(this.currentStep);
