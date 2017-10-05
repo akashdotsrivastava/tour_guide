@@ -2,6 +2,10 @@
 
 A small gem to use `shepherd.js` consistently across eLitmus applications
 
+
+## Tour is page independent. To make tour go across the pages, The next button of the last step of the page should have the link of the next page and back button of the first step of the page should have the link of the previous page. Either you are going back or going forward you need to set the local storage variable 'return_back' to true or false. This helps you maintain the flow across the pages. 
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
