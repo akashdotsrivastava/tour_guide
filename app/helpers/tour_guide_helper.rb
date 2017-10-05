@@ -1,5 +1,5 @@
 module TourGuideHelper
-  def tour_guide_tag(steps: nil, theme: 'shepherd-theme-dark', start_tour: true)
+  def tour_guide_tag(steps: nil, theme: 'shepherd-theme-dark', start_tour: true, links_to_stop_tour_when_clicked: nil)
     all_steps = all_steps || YAML.load_file("#{Rails.root}/config/shepherd.yml")[controller_name].try(:[], action_name).try(:[], "steps")
     # All the js goes into javascript variable and is used in javascript tag
     javascript = ''
@@ -13,6 +13,10 @@ module TourGuideHelper
           scrollTo: true
         }
       });
+      links_to_stop_tour_when_clicked = $('#{links_to_stop_tour_when_clicked.join(',')}')
+      links_to_stop_tour_when_clicked.click(function(){
+        tour.cancel();
+      })
     "
     # Shepherd all will contain all the steps
     shepherd_steps = ''
@@ -26,7 +30,7 @@ module TourGuideHelper
       shepherd_steps << "#{options.join(',')} });"
     end
     start_tour = 'tour.start();' if start_tour
-    skip_to_last_step = "localStorage.getItem('return_back') == 'true' ? tour.lastStep() : '' ;" 
+    skip_to_last_step = "localStorage.getItem('return_back') == 'true' ? tour.lastStep() : '' ;"
     close_after_window_load = '});'
     javascript = open_after_window_load + shepherd_init_js + shepherd_steps + start_tour + skip_to_last_step + close_after_window_load
     # whenever shepherd expects some value without quotes, To determine this from Yaml file, we are prepending and appending method name with $
@@ -48,7 +52,7 @@ end
       #     scrollTo: true
       #   }
       # });
-    
+
 #     tour.addStep('Environment Details', {title: 'Environment Details',text: 'Please click here to check the environment details',attachTo: '#code_execution_environment_details right',advanceOn: '#code_execution_environment_details click',buttons: [{"text": "Exit", "classes": "shepherd-button-secondary", "action": tour.cancel}, {"text": "Next", "classes": "shepherd-button-example-primary", "action": tour.next}] });
 #     tour.addStep('event_title', {title: 'Event Title',text: 'Check your Event Title here',attachTo: '#event_title left',buttons: [{"text": "Back", "classes": "shepherd-button-secondary", "action": tour.back}, {"text": "Next", "classes": "shepherd-button-example-primary", "action": tour.next}] });
 #     tour.addStep('user_event_status', {title: 'User Event Status',text: 'You can check the current event status here',attachTo: '#user_event_status left',buttons: [{"text": "Back", "classes": "shepherd-button-secondary", "action": tour.back}, {"text": "Next", "classes": "shepherd-button-example-primary", "action": tour.next}] });
