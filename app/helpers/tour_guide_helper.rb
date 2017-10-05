@@ -1,5 +1,5 @@
 module TourGuideHelper
-  def tour_guide_tag(steps: nil, theme: 'shepherd-theme-dark', start: true, last_step: false)
+  def tour_guide_tag(steps: nil, theme: 'shepherd-theme-dark', start_tour: true)
     all_steps = all_steps || YAML.load_file("#{Rails.root}/config/shepherd.yml")[controller_name].try(:[], action_name).try(:[], "steps")
     # All the js goes into javascript variable and is used in javascript tag
     javascript = ''
@@ -25,8 +25,8 @@ module TourGuideHelper
       each_step.each { |key, value| options << "#{key}: #{(value.is_a? Array) ? value : "'#{value}'"}" }
       shepherd_steps << "#{options.join(',')} });"
     end
-    start_tour = 'tour.start();' if start
-    skip_to_last_step = last_step ? 'tour.lastStep();' : ''
+    start_tour = 'tour.start();' if start_tour
+    skip_to_last_step = "localStorage.getItem('return_back') == 'true' ? tour.lastStep() : '' ;" 
     close_after_window_load = '});'
     javascript = open_after_window_load + shepherd_init_js + shepherd_steps + start_tour + skip_to_last_step + close_after_window_load
     # whenever shepherd expects some value without quotes, To determine this from Yaml file, we are prepending and appending method name with $
